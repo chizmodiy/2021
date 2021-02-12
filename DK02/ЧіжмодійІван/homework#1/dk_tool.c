@@ -6,14 +6,14 @@
 
 int build_matrix(int osx, int osy)
 {
-	
+	printf("Enter a number if you want to run the program, 0 if not: ");
 	int start;
 	int j, i; // first matrix
 	int n, m; // secd matrix
 
 	int matrix_1;
 	int matrix_2;
-	int* matr_1[4][4];
+	int* matr_2[4][4] ;
 	int* matr[4][4];
 	
 
@@ -28,12 +28,14 @@ int build_matrix(int osx, int osy)
 		{
 			for (i = 0; i < osy; i++)
 			{
-				matr[j][i] = 21;
-				matrix_1 = matr[j][i];
+				matr[j][i] = (int *)malloc(sizeof(matr));
+				matrix_1 = matr[j][i]=34;                                 
 				printf("%d\t", matr[j][i]); // frst matrix
+				
 			}
 			printf("\n");
 		}
+		
 
 		printf("   \t     +");
 		printf("\n");
@@ -44,10 +46,10 @@ int build_matrix(int osx, int osy)
 		{
 			for (m = 0; m < osy; m++)
 			{
-				matr_1[n][m] = 6;
-				matrix_2 = matr_1[n][m];
+				 matr_2[n][m] = (int*)malloc( sizeof(matr_2));
+				matrix_2 = matr_2[n][m]=8;
 
-				printf("%d\t", matr_1[n][m]);  //secd matrix
+				printf("%d\t", matr_2[n][m]);  //secd matrix
 			}
 			printf("\n");
 		}
@@ -68,6 +70,6 @@ int build_matrix(int osx, int osy)
 		}
 
 	}
-
-
+	
+	
 }
