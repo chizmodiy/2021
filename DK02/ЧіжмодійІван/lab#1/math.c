@@ -49,5 +49,11 @@ double my_sqr(int number) {
 		if (temp == x) return x;
 		x++;
 	}
+	
+}
+
+float result(int A, int B, int C)
+{
+	return (float)A * (float)((my_sqr(B + C) / B)) + (float)sum_factor(0, A);  // function for print result of functions
 }
 
