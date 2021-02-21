@@ -1,6 +1,6 @@
 #include<stdio.h>
-#include"math1.h"
 #include<math.h>
+#include"math1.h"
 
 
 
@@ -38,9 +38,10 @@ float sum_factor(int start, int finish)
 
 
 
+
 double result(int A, int B, int C)
 {
-	return (double)A * (double) (  dil( sqrt (B + C)  , B ) + (double)sum_factor(0, A));  // function for print result of functions
+	return  (double)A * (double)(dil(sqrt(B + C), B) + (double)sum_factor(0, A)); // function for print result of functions
 }
 
 float dil(float a, float b)
@@ -48,7 +49,7 @@ float dil(float a, float b)
 	if (b == 0)
 	{
 		printf("\tError! Values greater than 0\n");
-		
+
 
 	}
 	else
@@ -56,4 +57,3 @@ float dil(float a, float b)
 		return (float)(a / b);
 	}
 }
-
