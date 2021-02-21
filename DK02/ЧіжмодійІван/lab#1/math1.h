@@ -2,8 +2,8 @@
 #pragma once
 #include <stdio.h>
 #include <math.h>
-#define MATH_H
-#ifdef MATH_H
+#define MATH1_H
+#ifdef MATH1_H
 
 
 
