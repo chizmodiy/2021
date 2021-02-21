@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include<stdio.h>
-#include"math.h" // додавання бібліотеки
+#include"math1.h" // додавання бібліотеки
 
 int main(void)
 {
