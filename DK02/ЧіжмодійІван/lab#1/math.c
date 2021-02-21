@@ -1,5 +1,6 @@
 #include<stdio.h>
-#include"math.h"
+#include"math1.h"
+#include<math.h>
 
 
 
@@ -36,25 +37,10 @@ float sum_factor(int start, int finish)
 
 
 
-float  my_sqr(int number) {
-	int temp = 0, x = 1;
-	if (number < 0)
-	{
-		printf("Error...(<0)\n\t");
-	}
-
-
-	while (temp != x) {
-		temp = number / x;
-		if (temp == x) return x;
-		x++;
-	}
-
-}
 
 double result(int A, int B, int C)
 {
-	return (double)A * (double) (  dil( my_sqr (B + C)  , B ) + (double)sum_factor(0, A));  // function for print result of functions
+	return (double)A * (double) (  dil( sqrt (B + C)  , B ) + (double)sum_factor(0, A));  // function for print result of functions
 }
 
 float dil(float a, float b)
