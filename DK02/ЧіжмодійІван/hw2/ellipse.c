@@ -19,7 +19,7 @@ int isPointBelongsToEllipse(Point p, Ellipse e)
 {
     if ((p.x * p.x / (e.a * e.a)) + (p.y * p.y / (e.b * e.b)) == 1)
     {
-        return 1;                                                                         //перевірка значень на відповідніть до рівняння еліпса.
+        return 1;                                                                         //перевірка значень на відповідніть до рівняння еліпса (чи належить еліпсу)
     }
     return -1;
 }
