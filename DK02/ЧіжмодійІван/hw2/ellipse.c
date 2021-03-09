@@ -9,7 +9,8 @@
 
 Ellipse* createByParametersEllipse(int a, int b) 
 {
-    return createEllipseByCoords(sqrt(a * a - b * b), -sqrt(a * a - b * b), a, b);  //функція повертає 2 значення (+-) для еліпса. 
+    return createEllipseByCoords(sqrt(a * a - b * b), -sqrt(a * a - b * b), a, b); 
+    
 
 }
 
