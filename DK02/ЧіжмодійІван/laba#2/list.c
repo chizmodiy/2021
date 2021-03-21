@@ -49,7 +49,7 @@ void delete_list(list* sp)
 
 void add_value_to_list(list* list, int value)
 {
-	if (вц (list->first == NULL && list->first != list->last))
+	if ((list->first == NULL && list->first != list->last))
 		return;
 	list_item* item = make_list_item(value);
 	if (item == NULL)
