@@ -3,7 +3,7 @@
 
 int main()
 {
-
+	make_list();
 	int* new_list = make_list_item(4);
 	
 	add_value_to_list(new_list, 61);
