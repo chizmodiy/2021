@@ -8,4 +8,5 @@ float factorial(int number);
 float sum_factor(int start, int finish);
 double result(int A, int B, int C);
 float dil(float a, float b);
+double sqrt_func(int a );
 #endif
