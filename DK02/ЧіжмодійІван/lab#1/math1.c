@@ -57,3 +57,15 @@ float dil(float a, float b)
 		return (float)(a / b);
 	}
 }
+
+double sqrt_func(int a )
+{
+	if ( a< 0 )
+	{
+		printf("Error\n");
+	}
+	else
+	{
+		return sqrt(a);
+	}
+}
