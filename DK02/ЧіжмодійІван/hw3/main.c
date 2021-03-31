@@ -20,7 +20,7 @@ int main() {
     //Друкуємо список
     printCharList(list);
 
-    insertCharItemToCharListAtIndex(list, 4, 'm'); //вставка пропущеної літери за індексом
+    addItemToListByIndex(list, 4, 'm'); //вставка пропущеної літери за індексом
    
     printCharList(list);//друкуємо редактований список
     
