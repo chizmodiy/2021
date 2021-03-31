@@ -141,7 +141,7 @@ long SizeOfList(CharList* list) {
     return NullPointerException;
 }
 
-int insertCharItemToCharListAtIndex(CharList* list, int index, char value) {
+int addItemToListByIndex(CharList* list, int index, char value) {
     if (NULL == list || (list->start == NULL && list->start != list->close)) {
         return 0;
     }
