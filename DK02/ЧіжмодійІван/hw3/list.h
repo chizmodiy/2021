@@ -29,5 +29,5 @@ int addCharValueToCharList(CharList* list, char value);
 void removeLastItemFromList(CharList* list);
 void removeAllItems(CharList* list);
 long SizeOfList(CharList* list);
-int insertCharItemToCharListAtIndex(CharList* list, int index, char value);
+int addItemToListByIndex(CharList* list, int index, char value);
 #endif /* list_h */
