@@ -36,14 +36,6 @@ float sum_factor(int start, int finish)
 }
 
 
-
-
-
-double result(int A, int B, int C)
-{
-	return  (double)A * (double)(dil(sqrt(B + C), B) + (double)sum_factor(0, A)); // function for print result of functions
-}
-
 float dil(float a, float b)
 {
 	if (b == 0)
@@ -57,6 +49,13 @@ float dil(float a, float b)
 		return (float)(a / b);
 	}
 }
+
+
+double result(int A, int B, int C)
+{
+	return  (double)A * (double)(dil(sqrt(B + C), B) + (double)sum_factor(0, A)); // function for print result of functions
+}
+
 
 double sqrt_func(int a )
 {
