@@ -40,8 +40,7 @@ float dil(float a, float b)
 {
 	if (b == 0)
 	{
-		printf("\tError! Values greater than 0\n");
-
+		return  printf ( "erroe");
 
 	}
 	else
@@ -50,16 +49,9 @@ float dil(float a, float b)
 	}
 }
 
-
-double result(int A, int B, int C)
+double sqrt_func(int a)
 {
-	return  (double)A * (double)(dil(sqrt(B + C), B) + (double)sum_factor(0, A)); // function for print result of functions
-}
-
-
-double sqrt_func(int a )
-{
-	if ( a< 0 )
+	if (a < 0)
 	{
 		printf("Error\n");
 	}
@@ -67,4 +59,20 @@ double sqrt_func(int a )
 	{
 		return sqrt(a);
 	}
+}
+
+double result(int A, int B, int C)
+
+{
+	if (B == 0)
+	{
+		return 0;
+	}
+
+	if ((B + C) < 0)
+	{
+		return  0 ;
+	}
+
+	return  (double)A * (double)(dil(sqrt(B + C), B) + (double)sum_factor(0, A)); // function for print result of functions
 }
