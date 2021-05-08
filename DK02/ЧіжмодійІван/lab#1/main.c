@@ -5,14 +5,14 @@
 
 int main(void)
 {
-	
-	printf("Hello world\n");
-	
-	
-	printf("The result of the calculation: %f\n",result(3,4,5)); // вивід результату
-	
 
 	
 
-	
+
+	printf("The result of the calculation: %f\n", result(31, 4, -1)); // вивід результату
+
+
+
+
+
 }
