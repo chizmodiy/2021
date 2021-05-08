@@ -1,247 +1,268 @@
-#include <stdlib.h>
 #include "tree.h"
+#include <stdlib.h>
 
-static void deleteNode(intNode* aNode);
-static intNode* createNodeWithIntValue(int value);
+static void deleteNode(DoubleNode* aNode);
+static DoubleNode* createDoubleNodeWithDOUBLEValue(double aValue);
+static DoubleNode* getSuccessor(DoubleTree* tree, DoubleNode* toDelete);
+static void show_bouble_value(DoubleNode* node);
 
-intTree* createIntTree()
+DoubleTree* createDoubleTree(void)
 {
-    intTree* newTree = (intTree*)malloc(sizeof(intTree));
+	DoubleTree* NEWTree = (DoubleTree*)malloc(sizeof(DoubleTree));
 
-    if (newTree != NULL)
-    {
-        newTree->root = NULL;
-        newTree->count = 0;
-    }
+	if (NULL != NEWTree)
+	{
+		NEWTree->root = NULL;
+		NEWTree->count = 0;
+	}
 
-    return newTree;
+	return NEWTree;
 }
 
-void deleteIntTree(intTree* aTree)
+void DeleteTree(DoubleTree* aTree)
 {
-    deleteNode(aTree->root);
-    free(aTree);
+	if (NULL != aTree)
+	{
+		deleteNode(aTree->root);
+		free(aTree);
+	}
 }
 
-static void deleteNode(intNode* aNode)
+void includeNewItemToTree(DoubleTree* aTree, double aValue)
 {
-    if (NULL != aNode)
-    {
-        deleteNode(aNode->leftChild);
-        deleteNode(aNode->rightChild);
+	if (NULL == aTree)
+	{
+		return;
+	}
 
-        free(aNode);
-    }
+	DoubleNode* theNode = createDoubleNodeWithDOUBLEValue(aValue);
+	if (NULL == theNode)
+	{
+		return;
+	}
+
+	if (NULL == aTree->root)
+	{
+		aTree->root = theNode;
+		aTree->count++;
+	}
+	else
+	{
+		DoubleNode* theCurrent = aTree->root;
+		DoubleNode* theParent = NULL;
+
+		while (1)     //ПОШУК БАТЬКІВСЬКО ВУЗЛА
+		{
+			theParent = theCurrent;
+
+			if (aValue < theCurrent->value)
+			{
+				theCurrent = theCurrent->leftChild;
+				if (NULL == theCurrent)
+				{
+					theParent->leftChild = theNode;
+					break;
+				}
+			}
+			else
+			{
+				theCurrent = theCurrent->rightChild;
+				if (NULL == theCurrent)
+				{
+					theParent->rightChild = theNode;
+					break;
+				}
+			}
+		}
+
+		aTree->count++;
+	}
 }
 
-static intNode* createNodeWithIntValue(int value)
+DoubleNode* findNodeWithDOUBLEValue(DoubleTree* aTree, double aValue)
 {
-    intNode* newNode = (intNode*)malloc(sizeof(intNode));
+	DoubleNode* theCurrentNode = NULL;
 
-    if (NULL != newNode)
-    {
-        newNode->leftChild = NULL;
-        newNode->rightChild = NULL;
-        newNode->value = value;
-    }
+	if (NULL != aTree && NULL != aTree->root)
+	{
+		theCurrentNode = aTree->root;
+		while (aValue != theCurrentNode->value)
+		{
+			theCurrentNode = (aValue < theCurrentNode->value)
+				? theCurrentNode->leftChild
+				: theCurrentNode->rightChild;
 
-    return newNode;
+			if (NULL == theCurrentNode)
+			{
+				printf("Node don't find");
+				break;
+			}
+		}
+	}
+
+	return theCurrentNode;
 }
 
-void insertIntValueToTree(intTree* aTree, int aValue)
+void deleteNodeWithValue(DoubleTree* aTree, double aValue) {
+
+
+	if (NULL == aTree || NULL == aTree->root) {  //	ПЕРЕВІРЯЄМО ВХІДНІ ДАННІ
+		return;
+	}
+
+	DoubleNode* theCurrent = aTree->root;
+	DoubleNode* theParent = aTree->root;
+
+
+	while (aValue != theCurrent->value) {        // ЗНАХОДИМО НОДУ , ЯКУ ПОТРІБНО ВІДШУКАТИ , ЯКЩО НЕ ЗНАЙШЛИ ТО ВИДАЛЯЄМО 
+		theParent = theCurrent;
+		if (aValue < theCurrent->value) {
+			theCurrent = theCurrent->leftChild;
+		}
+		else {
+			theCurrent = theCurrent->rightChild;
+		}
+
+		if (NULL == theCurrent)
+		{
+			return;
+		}
+	}
+
+
+	if (NULL == theCurrent->leftChild && NULL == theCurrent->rightChild) {     // ВИПАДОК КОЛИ НОДА ЛИСТОВА  , І ЇЇ МОЖНА ВИДАЛИТИ 
+		if (aTree->root == theCurrent) {
+			aTree->root = NULL;
+		}
+		else if (theParent->leftChild == theCurrent) {
+			theParent->leftChild = NULL;
+		}
+		else {
+			theParent->rightChild = NULL;
+		}
+
+		aTree->count--;
+	}
+
+	else if (NULL == theCurrent->rightChild)
+	{
+		if (aTree->root == theCurrent) {
+			aTree->root = theCurrent->leftChild;
+		}
+		else if (theParent->leftChild == theCurrent) {
+			theParent->leftChild = theCurrent->leftChild;
+		}
+		else {
+			theParent->rightChild = theCurrent->rightChild;
+		}
+	}
+
+	else if (NULL == theCurrent->leftChild)
+	{  // ВИПАДОК КОЛИ ІСНУЄ ТІЛЬКИ ПРАВИЙ НАЩАДОК , І ВІН ПРИЄДНУЄТЬСЯ  ДО     PERENT-A
+
+		if (aTree->root == theCurrent)
+		{
+			aTree->root = theCurrent->rightChild;
+		}
+		else if (theParent->rightChild == theCurrent)
+		{
+			theParent->rightChild = theCurrent->rightChild;
+		}
+		else
+		{
+			theParent->leftChild = theCurrent->leftChild;
+		}
+		aTree->count--;
+	}
+
+	else
+	{
+		DoubleNode* successor = getSuccessor(aTree, theCurrent);  //ВИПАДОК КОЛИ ІСНУЮТЬ ОБИДВІ НАЩАДКИ , ПОТІМ ПЕРЕВІРК АТОГО ЩО БАТЬКО = ROOT (ТАКОГО БУТИ НЕ МОЖЕ )
+		if (aTree->root == successor) {
+			aTree->root = NULL;
+		}
+		else if (theParent->leftChild == theCurrent) {  //ЯКЩО ЦЕ ЛІВИЙ НАЩАДОК , ТО ПІДКЛУЧАЄТЬСЯ САКСЕСОР
+			theParent->leftChild = successor;
+		}
+		else if (theParent->rightChild == theCurrent)
+		{
+			theParent->rightChild = successor;
+		}
+		else
+		{
+			aTree->root = successor;
+			theCurrent->leftChild = NULL;
+			theCurrent->rightChild = NULL;
+			aTree->count--;
+		}
+
+	}
+	deleteNode(theCurrent);
+}
+
+void printTree(DoubleTree* aTree) 
 {
-    if (NULL == aTree)
-        return;
+	printf("Initial list\n");
+	DoubleNode* item = aTree->root;
+	show_bouble_value(item);
 
-
-    intNode* theNode = createNodeWithIntValue(aValue);
-    if (NULL == theNode)
-        return;
-
-
-    if (NULL == aTree->root)
-        aTree->root = theNode;
-
-    else
-    {
-        intNode* theCurrent = aTree->root;
-        intNode* theParent = NULL;
-
-        while (1)
-        {
-            theParent = theCurrent;
-
-            if (aValue < theCurrent->value)
-            {
-                theCurrent = theCurrent->leftChild;
-                if (NULL == theCurrent)
-                {
-                    theParent->leftChild = theNode;
-                    break;
-                }
-            }
-            else
-            {
-                theCurrent = theCurrent->rightChild;
-                if (NULL == theCurrent)
-                {
-                    theParent->rightChild = theNode;
-                    break;
-                }
-            }
-        }
-
-
-    }
-    aTree->count++;
 }
 
 
 
-intNode* findValueInTree(intTree* aTree, int aValue)
-{
-    intNode* theCurrentNode = NULL;
 
-    if (NULL != aTree)
-    {
-        theCurrentNode = aTree->root;
-        while (aValue != theCurrentNode->value)
-        {
-            theCurrentNode = (aValue < theCurrentNode->value)
-                ? theCurrentNode->leftChild
-                : theCurrentNode->rightChild;
-
-            if (NULL == theCurrentNode)
-            {
-                printf("Node don't find");
-                break;
-            }
-        }
-    }
-
-    return theCurrentNode;
+void show_bouble_value(DoubleNode* node) {
+	if (node == NULL)
+		return;
+	printf("Number: %f\n", node->value);
+	show_bouble_value(node->leftChild);
+	show_bouble_value(node->rightChild);
 }
 
-intNode* getSuccessor(intTree* aTree, intNode* aDelNode)
+
+
+void deleteNode(DoubleNode* aNode)
 {
-    intNode* theSaccessorParent = aDelNode;
-    intNode* succssesor = aDelNode;
-    intNode* theCurrent = aDelNode->rightChild;
+	if (NULL != aNode)
+	{
+		deleteNode(aNode->leftChild);
+		deleteNode(aNode->rightChild);
 
-    while (NULL != theCurrent)
-    {
-        theSaccessorParent = succssesor;
-        succssesor = theCurrent;
-        theCurrent = theCurrent->leftChild;
-    }
-
-    if (succssesor != aDelNode->rightChild)
-    {
-        theSaccessorParent->leftChild = succssesor->rightChild;
-        succssesor->rightChild = aDelNode->rightChild;
-    }
-
-    return succssesor;
+		free(aNode);
+	}
 }
 
-int deleteValueFromTree(intTree* aTree, int aValue)
+DoubleNode* createDoubleNodeWithDOUBLEValue(double aValue)
 {
-    int theResult = 1;
+	DoubleNode* theNode = (DoubleNode*)malloc(sizeof(DoubleNode));
 
+	if (NULL != theNode)
+	{
+		theNode->leftChild = NULL;
+		theNode->rightChild = NULL;
+		theNode->value = aValue;
+	}
 
-    intNode* theCurrent = aTree->root;
-    intNode* theParent = aTree->root;
-
-    int LeftChild = 0;
-    
-  
-    while (aValue != theCurrent->value)  // ЗНАХОДИМО НОДУ , ЯКУ ПОТРІБНО ВІДШУКАТИ , ЯКЩО НЕ ЗНАЙШЛИ ТО ВИДАЛЯЄМО 
-    {
-        theParent = theCurrent;
-        if (aValue < theCurrent->value)
-        {
-            LeftChild = 1;
-            theCurrent = theCurrent->leftChild;
-        }
-        else
-        {
-            LeftChild = 0;
-            theCurrent = theCurrent->rightChild;
-        }
-
-        if (NULL == theCurrent)
-            return 0;
-
-    }
-
-
-    if (NULL == theCurrent->leftChild && NULL == theCurrent->rightChild)   // ВИПАДОК КОЛИ НОДА ЛИСТОВА  , І ЇЇ МОЖНА ВИДАЛИТИ 
-    {
-        if (aTree->root == theCurrent)
-            aTree->root = NULL;
-
-        else if (LeftChild)
-            theParent->leftChild = NULL;
-
-        else
-            theParent->rightChild = NULL;
-
-    }
-    else if (NULL == theCurrent->rightChild) // ВИПАДОК КОЛИ ІСНУЄ ТІЛЬКИ ЛІВИЙ НАЩАДОК , І ВІН ПРИЄДНУЄТЬСЯ ДО     PERENT-A
-    {
-        if (aTree->root == theCurrent)
-            aTree->root = theCurrent->leftChild;
-
-        else if (LeftChild)
-            theParent->leftChild = theCurrent->leftChild;
-
-        else
-            theParent->rightChild = theCurrent->leftChild;
-
-    }
-    else if (NULL == theCurrent->leftChild) // ВИПАДОК КОЛИ ІСНУЄ ТІЛЬКИ ПРАВИЙ НАЩАДОК , І ВІН ПРИЄДНУЄТЬСЯ  ДО     PERENT-A
-    {
-        if (aTree->root == theCurrent)
-            aTree->root = theCurrent->rightChild;
-
-        else if (LeftChild)
-            theParent->leftChild = theCurrent->rightChild;
-
-        else
-            theParent->rightChild = theCurrent->rightChild;
-
-    }
-    else
-    {
-        intNode* successor = getSuccessor(aTree, theCurrent); //ВИПАДОК КОЛИ ІСНУЮТЬ ОБИДВІ НАЩАДКИ , ПОТІМ ПЕРЕВІРК АТОГО ЩО БАТЬКО = ROOT (ТАКОГО БУТИ НЕ МОЖЕ )
-        if (aTree->root == successor)
-            aTree->root = NULL;
-
-        else if (LeftChild)
-            theParent->leftChild = successor; //ЯКЩО ЦЕ ЛІВИЙ НАЩАДОК , ТО ПІДКЛУЧАЄТЬСЯ САКСЕСОР
-
-        else
-            theParent->rightChild = successor; 
-
-    }
-
-    free(theCurrent);
-    theResult = 1;
-
-    return theResult;
+	return theNode;
 }
 
-void printTree(intNode* aRoot)
-{
-    if (NULL == aRoot)
-        return;
+DoubleNode* getSuccessor(DoubleTree* Atree, DoubleNode* aDelNode) {
+	DoubleNode* TheSuccessParent = aDelNode;
+	DoubleNode* successor = aDelNode;
+	DoubleNode* TheCurrent = aDelNode->rightChild;
+
+	while (NULL != TheCurrent) {
+		TheSuccessParent = successor;
+		successor = TheCurrent;
+		TheCurrent = TheCurrent->leftChild;
+	}
+
+	if (successor != aDelNode->rightChild) {
+		TheSuccessParent->leftChild = successor->rightChild;
+		successor->rightChild = aDelNode->rightChild;
+	}
 
 
-    printf("%d ", aRoot->value);
 
-
-    printTree(aRoot->leftChild);
-    printTree(aRoot->rightChild);
-
-
+	return successor;
 }
