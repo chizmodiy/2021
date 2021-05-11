@@ -1,1 +1,135 @@
 
+
+#define delta_cord 0.05
+#define delta_scale 0.1
+
+#define Width 500
+#define Height 500
+
+void drawing_func();
+void control_keyb(unsigned char key, int x, int y);
+
+float vis_X(float t);
+float vis_Y(float t);
+
+float mash = 1.0f, y_d = 0.0f, x_d = 0.0f;
+float a = 0.9;
+int main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGB);
+	glutInitWindowSize(Width, Height);
+	glutInitWindowPosition(350, 150);
+	glutCreateWindow("diagrama 1");
+	glutDisplayFunc(drawing_func);
+
+	glutKeyboardFunc(control_keyb);
+	
+	glutMainLoop();
+
+	
+}
+
+void control_keyb(unsigned char key, int x, int y)
+{
+
+	switch (key)
+	{
+	case '-':
+		if (mash - delta_scale > 0)
+			mash -= delta_scale;
+		
+		break;
+	case '=':
+		mash += delta_scale;
+		
+		break;
+	case 'w':
+		y_d += delta_cord;
+		
+		break;
+	case 'a':
+		x_d -= delta_cord;
+		
+		break;
+	case 's':
+		y_d -= delta_cord;
+	
+		break;
+	case 'd':
+		x_d += delta_cord;
+		
+		break;
+
+	default:
+		break;
+	}
+	glutPostRedisplay();
+}
+
+void drawing_func()
+{
+	std::cout << mash << " " << x_d << " " << y_d << "\n";
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glBegin(GL_LINE_STRIP);								
+	glColor3f(0.4f, 0.7f, 1.0f);
+	//відмалювання графіка 
+	for (float t = -2.5*M_PI ; t <= 2.5* M_PI; t += 0.1)
+		glVertex2f((vis_X(t) + x_d) * mash, (vis_Y(t) + y_d) * mash);
+	glEnd();
+
+	glBegin(GL_LINES);									
+
+	glColor3f(0.8f, 0.8f, 0.8f);
+	// відмальовка осей
+	glVertex2f(-1, 0);
+	glVertex2f(1, 0);
+
+	glVertex2f(1, 0);
+	glVertex2f(0.97, -0.02);
+	glVertex2f(1, 0);
+	glVertex2f(0.97, 0.02);
+
+	glVertex2f(0, -1);
+	glVertex2f(0, 1);
+
+	glVertex2f(0, 1);
+	glVertex2f(0.02, 0.97);
+	glVertex2f(0, 1);
+	glVertex2f(-0.02, 0.97);
+	// відмальвка поділок 
+	for (float i = 0; i < 1; i += 0.1 * mash)
+	{
+		glVertex2f(i, -0.01 * mash);
+		glVertex2f(i, 0.01 * mash);
+		glVertex2f(-0.01 * mash, i);
+		glVertex2f(0.01 * mash, i);
+		
+	}
+	for (float i = 0; i > -1; i -= 0.1 * mash)
+	{
+		glVertex2f(i, -0.01 * mash);
+		glVertex2f(i, 0.01 * mash);
+		glVertex2f(-0.01 * mash, i);
+		glVertex2f(0.01 * mash, i);
+		
+	}
+
+	glEnd();
+
+	glFlush();
+	
+	
+}
+
+float vis_X(float t)
+{
+	return a*  cos(t/5) * cos(t);
+}
+
+float vis_Y(float t)
+{
+	return a  * cos(t/5) * sin(t);
+}
